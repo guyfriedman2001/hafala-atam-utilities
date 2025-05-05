@@ -1,5 +1,12 @@
 #!/bin/bash
 
+#step 0 - verify that we are in an actuall git repo
+if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    echo "Error: Not inside a Git repository."
+    sleep 3
+    exit 1
+fi
+
 # Step 1: Show files in current directory
 echo "Select files to add:"
 ls -p | grep -v /  # list only files, not directories
