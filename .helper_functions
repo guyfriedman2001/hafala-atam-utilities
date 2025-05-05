@@ -1,3 +1,83 @@
+#list of all of the functions
+
+# =========== utilities for the user ===========
+
+init() {
+    chmod +x .start.sh
+    ./.start.sh
+}
+
+initialise() {
+    init
+}
+
+start() {
+    init
+}
+
+
+# =========== utilities for the vm ===========
+
+fix_internet() {
+    ~/network_fix.sh
+}
+
+push_git() {
+    ~/git_pusher.sh
+}
+
+create_ssh() {
+    ~/open_ssh.sh
+}
+
+
+
+
+
+# VVVVVVVVVVV utilities for ME VVVVVVVVVVV
+# =========== update ===========
+
 update_script_list() {
     cp script_lists.txt .script_lists.txt
 }
+
+update_helper_functions() {
+    cp helper_functions.txt .helper_functions
+}
+
+
+# =========== update - summary ===========
+
+update() {
+    local funcs=$(awk '/^update_[a-zA-Z0-9_]*\s*\(\)\s*\{/ { gsub(/\s*\(\).*/, "", $1); print $1 }' "$SCRIPT_FILE")
+    for func in $funcs; do
+        if [[ $func != update ]]; then
+            "$func"
+        fi
+    done
+}
+
+
+
+
+
+# =========== executable ===========
+
+make_all_executable() {
+    find . -maxdepth 1 -type f -exec chmod +x {} \;
+}
+
+
+
+
+
+
+
+# =========== utilities for this specific file ===========
+
+SCRIPT_FILE="${BASH_SOURCE[0]}"
+
+
+
+
+
