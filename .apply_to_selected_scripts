@@ -1,0 +1,47 @@
+#!/bin/bash
+
+
+# === Config ===
+
+default_list=true  # set this to false to use a custom file list from $1
+
+if $default_list; then
+    SCRIPT_LIST_FILE=".scripts_list.txt"
+else
+    SCRIPT_LIST_FILE="$1"
+fi
+
+
+
+# === Input Validation ===
+if [[ ! -f "$SCRIPT_LIST_FILE" ]]; then
+    echo "Error: Script list file '$SCRIPT_LIST_FILE' not found."
+    sleep 3
+    exit 1
+fi
+
+# === Usage Help ===
+if [[ $# -ne 1 ]]; then
+    echo "Usage: $0 \"command_template_with_{}\""
+    echo "Example: $0 \"chmod +x {}\""
+    sleep 3
+    exit 1
+fi
+
+COMMAND_TEMPLATE="$1"
+
+# === Processing ===
+while IFS= read -r file; do
+    if [[ -f "$file" ]]; then
+        cmd="${COMMAND_TEMPLATE//\{\}/"$file"}"
+        echo "Running: $cmd"
+        eval "$cmd"
+    else
+        echo "Warning: '$file' not found in current directory."
+    fi
+done < "$SCRIPT_LIST_FILE"
+
+apply_to_scripts() { #function to easily call this script blyat
+    ~/.apply_to_selected_scripts "$@"
+}
+
