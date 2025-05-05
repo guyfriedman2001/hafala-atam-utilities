@@ -1,0 +1,13 @@
+
+# =========== utility scripts ===========
+
+network_fix.sh
+git_pusher.sh
+open_ssh.sh
+
+
+# =========== download scripts ===========
+
+create_clion_on_vm.sh
+
+
